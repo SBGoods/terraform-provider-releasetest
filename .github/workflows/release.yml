@@ -37,6 +37,11 @@ jobs:
           args: batch ${{ inputs.versionNumber }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload release notes
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-notes
+          path: .changes/${{ inputs.versionNumber }}.md
       - name: Merge changes
         uses: miniscruff/changie-action@v0
         with:
@@ -62,22 +67,12 @@ jobs:
         run: |
           git config --global user.name "${{ secrets.CI_COMMIT_AUTHOR }}"
           git config --global user.email "${{ secrets.CI_COMMIT_EMAIL }}"
+          git pull
           git tag "v${{ inputs.versionNumber }}"
           git push
-  release-notes:
-    needs: [ changelog, release-tag ]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - uses: actions/upload-artifact@v3
-        with:
-          name: release-notes
-          path: .changes/${{ inputs.versionNumber }}.md
   terraform-provider-release:
     name: 'Terraform Provider Release'
-    needs: [go-version, release-notes]
+    needs: [go-version, release-tag]
     uses: hashicorp/ghaction-terraform-provider-release/.github/workflows/community.yml@v2
     secrets:
       gpg-private-key: '${{ secrets.GPG_PRIVATE_KEY }}'
