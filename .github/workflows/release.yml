@@ -1,8 +1,6 @@
 # Terraform Provider release workflow.
 name: Release
 
-# This GitHub action creates a release when a tag that matches the pattern
-# "v*" (e.g. v0.1.0) is created.
 on:
   workflow_dispatch:
     inputs:
@@ -48,8 +46,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Git push changelog
         run: |
-          git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
-          git config --global user.email "${{ env.CI_COMMIT_EMAIL }}"
+          git config --global user.name "${{ secrets.CI_COMMIT_AUTHOR }}"
+          git config --global user.email "${{ secrets.CI_COMMIT_EMAIL }}"
           git commit -a -m "Update changelog"
           git push
   release-tag:
@@ -62,8 +60,8 @@ jobs:
           fetch-depth: 0
       - name: Git push release tag
         run: |
-          git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
-          git config --global user.email "${{ env.CI_COMMIT_EMAIL }}"
+          git config --global user.name "${{ secrets.CI_COMMIT_AUTHOR }}"
+          git config --global user.email "${{ secrets.CI_COMMIT_EMAIL }}"
           git tag "v${{ inputs.versionNumber }}"
           git push
   release-notes:
@@ -84,4 +82,5 @@ jobs:
     secrets:
       gpg-private-key: '${{ secrets.GPG_PRIVATE_KEY }}'
     with:
+      release-notes: true
       setup-go-version: '${{ needs.go-version.outputs.version }}'
