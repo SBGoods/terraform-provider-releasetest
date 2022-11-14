@@ -80,7 +80,7 @@ jobs:
           path: .changes/${{ inputs.versionNumber }}.md
   terraform-provider-release:
     name: 'Terraform Provider Release'
-    needs: [go-version, release-tag]
+    needs: [go-version, release-notes]
     uses: ./.github/workflows/community.yml
     secrets:
       gpg-private-key: '${{ secrets.GPG_PRIVATE_KEY }}'
