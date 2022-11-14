@@ -84,6 +84,7 @@ jobs:
     uses: ./.github/workflows/community.yml
     secrets:
       gpg-private-key: '${{ secrets.GPG_PRIVATE_KEY }}'
+      gpg-private-key-passphrase: '${{ secrets.PASSPHRASE }}'
     with:
       release-notes: true
       setup-go-version: '${{ needs.go-version.outputs.version }}'
