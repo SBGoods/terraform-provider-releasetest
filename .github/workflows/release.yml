@@ -75,11 +75,13 @@ jobs:
           ref: v${{ inputs.versionNumber }}
           fetch-depth: 0
       - name: Generate Release Notes
-        run: cp ./.changes/${{ inputs.versionNumber }}.md release-notes.txt
+        run: |
+          cd .changes
+          sed -e "1{/# /d;}" -e "2{/^$/d;}" ${{ inputs.versionNumber }} > release-notes.txt
       - uses: actions/upload-artifact@v3
         with:
           name: release-notes
-          path: release-notes.txt
+          path: ./.changes/release-notes.txt
           retention-days: 1
   terraform-provider-release:
     name: 'Terraform Provider Release'
