@@ -74,10 +74,13 @@ jobs:
         with:
           ref: v${{ inputs.versionNumber }}
           fetch-depth: 0
+      - name: Generate Release Notes
+        run: cp ./.changes/${{ inputs.versionNumber }}.md release-notes.txt
       - uses: actions/upload-artifact@v3
         with:
           name: release-notes
-          path: .changes/${{ inputs.versionNumber }}.md
+          path: release-notes.txt
+          retention-days: 1
   terraform-provider-release:
     name: 'Terraform Provider Release'
     needs: [go-version, release-notes]
