@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set Value
-      - id: changelog-version
+        id: changelog-version
         run: echo "version=$(echo ${{ inputs.versionNumber }} | cut -c 2-)" >> $GITHUB_OUTPUT
   go-version:
     runs-on: ubuntu-latest
