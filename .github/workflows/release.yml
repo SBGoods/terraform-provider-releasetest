@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set Value
-      - run: |
+        run: |
         echo "changelogVersion=$(echo $inputs.versionNumber | cut -c 2-)" >> $GITHUB_ENV
   go-version:
     runs-on: ubuntu-latest
