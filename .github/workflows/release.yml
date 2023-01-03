@@ -15,6 +15,9 @@ permissions:
   contents: write
 
 jobs:
+  set-changelog-version:
+    run: |
+      echo "changelogVersion = $(echo ${{ inputs.versionNumber }} | cut -c 2-)" >> $GITHUB_ENV
   go-version:
     runs-on: ubuntu-latest
     outputs:
@@ -34,7 +37,7 @@ jobs:
         uses: miniscruff/changie-action@v0
         with:
           version: latest
-          args: batch ${{ inputs.versionNumber }}
+          args: batch ${{ env.changelogVersion }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Merge changes
@@ -64,20 +67,20 @@ jobs:
           git config --global user.name "${{ secrets.CI_COMMIT_AUTHOR }}"
           git config --global user.email "${{ secrets.CI_COMMIT_EMAIL }}"
           git pull
-          git tag "v${{ inputs.versionNumber }}"
-          git push origin "v${{ inputs.versionNumber }}"
+          git tag "${{ inputs.versionNumber }}"
+          git push origin "${{ inputs.versionNumber }}"
   release-notes:
     needs: [ changelog, release-tag ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: v${{ inputs.versionNumber }}
+          ref: ${{ inputs.versionNumber }}
           fetch-depth: 0
       - name: Generate Release Notes
         run: |
           cd .changes
-          sed -e "1{/# /d;}" -e "2{/^$/d;}" ${{ inputs.versionNumber }}.md > release-notes.txt
+          sed -e "1{/# /d;}" -e "2{/^$/d;}" ${{ env.changelogVersion }}.md > release-notes.txt
       - uses: actions/upload-artifact@v3
         with:
           name: release-notes
@@ -93,4 +96,4 @@ jobs:
     with:
       release-notes: true
       setup-go-version: '${{ needs.go-version.outputs.version }}'
-      git-ref: 'v${{ inputs.versionNumber }}'
+      #git-ref: '${{ inputs.versionNumber }}'
