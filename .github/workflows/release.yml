@@ -21,7 +21,7 @@ jobs:
       -
       - name: Set Value
         run: |
-          echo ${{ inputs.versionNumber }}
+          echo "changelogVersion=$(echo $inputs.versionNumber | cut -c 2-)" >> $GITHUB_ENV
   go-version:
     runs-on: ubuntu-latest
     outputs:
