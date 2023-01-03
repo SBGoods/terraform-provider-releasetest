@@ -1,3 +1,9 @@
+## 0.1.3 (January 03, 2023)
+
+NOTES:
+
+* Add env variable [#2](https://github.com/hashicorp/terraform-provider-null/issues/2)
+
 ## 0.1.2 (November 15, 2022)
 
 BREAKING CHANGES:
