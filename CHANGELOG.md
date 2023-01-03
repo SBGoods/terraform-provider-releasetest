@@ -1,3 +1,9 @@
+## 0.1.4 (January 03, 2023)
+
+NOTES:
+
+* Fix syntax [#5](https://github.com/hashicorp/terraform-provider-null/issues/5)
+
 ## 0.1.3 (January 03, 2023)
 
 NOTES:
