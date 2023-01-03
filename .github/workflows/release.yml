@@ -78,7 +78,7 @@ jobs:
           git tag "${{ inputs.versionNumber }}"
           git push origin "${{ inputs.versionNumber }}"
   release-notes:
-    needs: [ changelog, release-tag ]
+    needs: [ changelog-version, changelog, release-tag ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
