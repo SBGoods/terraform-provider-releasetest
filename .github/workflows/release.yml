@@ -20,19 +20,15 @@ jobs:
     outputs:
       version: ${{ steps.changelog-version.outputs.version }}
     steps:
-      - name: Set Value
-        id: changelog-version
-        run: |
-          echo ${{ inputs.versionNumber }}
-          echo "version=$(echo ${{ inputs.versionNumber }} | cut -c 2-)" >> $GITHUB_OUTPUT
+      - id: changelog-version
+        run: echo "version=$(echo ${{ inputs.versionNumber }} | cut -c 2-)" >> $GITHUB_OUTPUT
   go-version:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.go-version.outputs.version }}
     steps:
-      - uses: actions/checkout@v3
       - id: go-version
-        run: echo "::set-output name=version::$(cat ./.go-version)"
+        run: echo "version=$(cat ./.go-version)" >> $GITHUB_OUTPUT
   changelog:
     needs: changelog-version
     runs-on: ubuntu-latest
@@ -104,4 +100,4 @@ jobs:
     with:
       release-notes: true
       setup-go-version: '${{ needs.go-version.outputs.version }}'
-      #git-ref: '${{ inputs.versionNumber }}'
+      git-ref: '${{ inputs.versionNumber }}'
