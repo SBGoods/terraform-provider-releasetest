@@ -15,12 +15,12 @@ permissions:
   contents: write
 
 jobs:
-  set-changelog-version:
+  changelog-version:
     runs-on: ubuntu-latest
     steps:
       - name: Set Value
-        run: |
-          echo "changelogVersion=$(echo ${{ inputs.versionNumber }} | cut -c 2-)" >> $GITHUB_ENV
+      - id: changelog-version
+        run: echo "version=$(echo ${{ inputs.versionNumber }} | cut -c 2-)" >> $GITHUB_OUTPUT
   go-version:
     runs-on: ubuntu-latest
     outputs:
@@ -30,7 +30,7 @@ jobs:
       - id: go-version
         run: echo "::set-output name=version::$(cat ./.go-version)"
   changelog:
-    needs: set-changelog-version
+    needs: changelog-version
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -41,7 +41,7 @@ jobs:
         uses: miniscruff/changie-action@v0
         with:
           version: latest
-          args: batch ${{ env.changelogVersion }}
+          args: batch ${{ steps.changelog-version.outputs.version }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Merge changes
@@ -84,7 +84,7 @@ jobs:
       - name: Generate Release Notes
         run: |
           cd .changes
-          sed -e "1{/# /d;}" -e "2{/^$/d;}" ${{ env.changelogVersion }}.md > release-notes.txt
+          sed -e "1{/# /d;}" -e "2{/^$/d;}" ${{ steps.changelog-version.outputs.version }}.md > release-notes.txt
       - uses: actions/upload-artifact@v3
         with:
           name: release-notes
