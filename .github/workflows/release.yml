@@ -18,9 +18,10 @@ jobs:
   set-changelog-version:
     runs-on: ubuntu-latest
     steps:
+      -
       - name: Set Value
         run: |
-        echo ${{ inputs.versionNumber }}
+          echo ${{ inputs.versionNumber }}
   go-version:
     runs-on: ubuntu-latest
     outputs:
