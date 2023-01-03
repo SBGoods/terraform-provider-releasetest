@@ -18,7 +18,6 @@ jobs:
   set-changelog-version:
     runs-on: ubuntu-latest
     steps:
-      -
       - name: Set Value
         run: |
           echo "changelogVersion=$(echo $inputs.versionNumber | cut -c 2-)" >> $GITHUB_ENV
