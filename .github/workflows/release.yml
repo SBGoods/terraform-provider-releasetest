@@ -17,6 +17,8 @@ permissions:
 jobs:
   changelog-version:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.changelog-version.outputs.version }}
     steps:
       - name: Set Value
         id: changelog-version
@@ -43,7 +45,7 @@ jobs:
         uses: miniscruff/changie-action@v0
         with:
           version: latest
-          args: batch ${{ steps.changelog-version.outputs.version }}
+          args: batch ${{ needs.changelog-version.outputs.version }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Merge changes
@@ -86,7 +88,7 @@ jobs:
       - name: Generate Release Notes
         run: |
           cd .changes
-          sed -e "1{/# /d;}" -e "2{/^$/d;}" ${{ steps.changelog-version.outputs.version }}.md > release-notes.txt
+          sed -e "1{/# /d;}" -e "2{/^$/d;}" ${{ needs.changelog-version.outputs.version }}.md > release-notes.txt
       - uses: actions/upload-artifact@v3
         with:
           name: release-notes
