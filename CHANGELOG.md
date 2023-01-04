@@ -1,3 +1,9 @@
+## 0.1.5 (January 04, 2023)
+
+NOTES:
+
+* Remove deprecated set-output [#4](https://github.com/SBGoods/terraform-provider-releasetest/issues/4)
+
 ## 0.1.4 (January 03, 2023)
 
 NOTES:
