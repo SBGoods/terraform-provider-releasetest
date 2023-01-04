@@ -1,0 +1,5 @@
+kind: NOTES
+body: Remove deprecated set-output
+time: 2023-01-04T12:47:49.257208-05:00
+custom:
+  Issue: "4"
