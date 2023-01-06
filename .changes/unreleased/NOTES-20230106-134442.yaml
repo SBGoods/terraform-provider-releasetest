@@ -1,5 +1,0 @@
-kind: NOTES
-body: Use env variables in CI
-time: 2023-01-06T13:44:42.761819-05:00
-custom:
-  Issue: "5"
