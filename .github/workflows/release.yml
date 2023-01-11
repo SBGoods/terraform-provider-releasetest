@@ -23,7 +23,7 @@ jobs:
       version: ${{ steps.changelog-version.outputs.version }}
     steps:
       - id: changelog-version
-        run: echo "version=$(echo ${{ inputs.versionNumber }} | cut -c 2-)" >> $GITHUB_OUTPUT
+        run: echo "version=$(echo "${{ inputs.versionNumber }}" | cut -c 2-)" >> "$GITHUB_OUTPUT"
   go-version:
     runs-on: ubuntu-latest
     outputs:
@@ -31,7 +31,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - id: go-version
-        run: echo "version=$(cat ./.go-version)" >> $GITHUB_OUTPUT
+        run: echo "version=$(cat ./.go-version)" >> "$GITHUB_OUTPUT"
   changelog:
     needs: changelog-version
     runs-on: ubuntu-latest
@@ -96,7 +96,7 @@ jobs:
   terraform-provider-release:
     name: 'Terraform Provider Release'
     needs: [go-version, release-notes]
-    uses: ./.github/workflows/community.yml
+    uses: hashicorp/ghaction-terraform-provider-release/.github/workflows/community.yml@v2
     secrets:
       gpg-private-key: '${{ secrets.GPG_PRIVATE_KEY }}'
       gpg-private-key-passphrase: '${{ secrets.PASSPHRASE }}'
