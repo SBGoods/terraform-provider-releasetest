@@ -1,3 +1,9 @@
+## 0.1.7 (January 11, 2023)
+
+NOTES:
+
+* Testing new changie format ([#2](https://github.com/SBGoods/terraform-provider-releasetest/issues/2))
+
 ## 0.1.6 (January 06, 2023)
 
 NOTES:
